@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./styles.css" />
+    <script src="./index.js" defer></script>
+    <title>Library</title>
+  </head>
+  <body>
+    <dialog>
+      <form action="" method="post">
+        <button onclick="closeModal()">Close</button>
+        <label for="Title">Title</label>
+        <input type="text" name="title" id="title" autofocus />
+
+        <label for="Author">Author</label>
+        <input type="text" name="author" id="author" />
+
+        <label for="num_of_pages">Number of Pages</label>
+        <input type="number" name="num_of_pages" id="num_of_pages" />
+
+        <button type="submit">Add</button>
+      </form>
+    </dialog>
+    <div class="booksList">
+      <div class="action-container">
+        <button onclick="displayModal()">Add New Book</button>
+      </div>
+    </div>
+  </body>
+</html>
