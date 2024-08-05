@@ -1,33 +1,4 @@
-const myLibrary = [
-  {
-    id: 1,
-    title: "Harry Potter",
-    author: "JK Rowling",
-    num_of_pages: 346,
-    read: "read",
-  },
-  {
-    id: 2,
-    title: "The Laws of Human Nature",
-    author: "Robert Greene",
-    num_of_pages: 346,
-    read: "unread",
-  },
-  {
-    id: 3,
-    title: "Pride and Prejuidice",
-    author: "Jane Austen",
-    num_of_pages: 346,
-    read: "read",
-  },
-  {
-    id: 4,
-    title: "Love",
-    author: "Anton Chekhov",
-    num_of_pages: 346,
-    read: "unread",
-  },
-];
+const myLibrary = [];
 
 const dialog = document.querySelector("dialog");
 const booksList = document.querySelector(".booksList");
@@ -74,6 +45,7 @@ function addBookToLibrary() {
     myLibrary.push(book);
     displayBooks();
     newBookForm.reset();
+    closeModal();
   } else {
     alert("Please fill in the fields");
   }
@@ -102,39 +74,45 @@ function handleToggle(editBookIndex) {
 }
 
 function displayBooks() {
-  let allData = myLibrary.map((item, index) => {
-    return `<div class="card">
+  let allData;
+  if (!!myLibrary.length) {
+    allData = myLibrary.map((item, index) => {
+      return `<div class="card">
+        
+        <button id="deleteBtn" onClick="removeBookFromLibrary(${index})">Delete</button>
+        <div id="titleWrapper">
+            <h3>
+            ${item.title}
+            </h3>
+            <h5>${item.author}</h5>
+        </div>
+        <div>
     
-    <button id="deleteBtn" onClick="removeBookFromLibrary(${index})">Delete</button>
-    <div id="titleWrapper">
-        <h3>
-        ${item.title}
-        </h3>
-        <h5>${item.author}</h5>
-    </div>
-    <div>
-
-    <div id="read-btn">
-      <div>${item.num_of_pages} Pages</div>
-      <div>
-        <input type="checkbox" id="read${index}" name="read${index}"
-        ${
-          item.read === "read" ? "checked" : ""
-        } onChange="handleToggle(${index})"
-        />
- 
-        <label for="read">${
-          item?.read === "read" ? "Mark as Unread" : "Mark as Read"
-        } </label>
+        <div id="read-btn">
+          <div>${item.num_of_pages} Pages</div>
+          <div>
+            <input type="checkbox" id="read${index}" name="read${index}"
+            ${
+              item.read === "read" ? "checked" : ""
+            } onChange="handleToggle(${index})"
+            />
      
-    
-      </div>
-    </div>
-    
-    
-    </div>
-    </div>`;
-  });
+            <label for="read">${
+              item?.read === "read" ? "Mark as Unread" : "Mark as Read"
+            } </label>
+         
+        
+          </div>
+        </div>
+        
+        
+        </div>
+        </div>`;
+    });
+  } else {
+    allData = `<div>
+    You don't have any books! Click on the 'Add New Book' button to add one.</div>`;
+  }
   booksCardWrapper.innerHTML = allData;
 }
 
