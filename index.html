@@ -10,8 +10,11 @@
   </head>
   <body>
     <dialog>
-      <form action="" method="post">
-        <button onclick="closeModal()">Close</button>
+      <form id="addNewBookForm">
+        <button id="closeBtn" type="button" onclick="closeModal()">
+          Close
+        </button>
+        <h2>Add a new Book</h2>
         <label for="Title">Title</label>
         <input type="text" name="title" id="title" autofocus />
 
@@ -21,12 +24,22 @@
         <label for="num_of_pages">Number of Pages</label>
         <input type="number" name="num_of_pages" id="num_of_pages" />
 
-        <button type="submit">Add</button>
+        <div>
+          <label for="read">Read</label>
+          <input type="checkbox" id="read" name="read" value="read" />
+        </div>
+
+        <button id="addButton" type="button" onclick="addBookToLibrary()">
+          Add
+        </button>
       </form>
     </dialog>
     <div class="booksList">
       <div class="action-container">
-        <button onclick="displayModal()">Add New Book</button>
+        <h1>Welcome to the Library</h1>
+        <button id="addNewBookBtn" onclick="displayModal()">
+          Add New Book
+        </button>
       </div>
     </div>
   </body>

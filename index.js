@@ -4,28 +4,28 @@ const myLibrary = [
     title: "Harry Potter",
     author: "JK Rowling",
     num_of_pages: 346,
-    read: true,
+    read: "read",
   },
   {
     id: 2,
     title: "The Laws of Human Nature",
     author: "Robert Greene",
     num_of_pages: 346,
-    read: false,
+    read: "unread",
   },
   {
     id: 3,
     title: "Pride and Prejuidice",
     author: "Jane Austen",
     num_of_pages: 346,
-    read: false,
+    read: "read",
   },
   {
     id: 4,
     title: "Love",
     author: "Anton Chekhov",
     num_of_pages: 346,
-    read: false,
+    read: "unread",
   },
 ];
 
@@ -35,12 +35,48 @@ const booksList = document.querySelector(".booksList");
 const booksCardWrapper = document.createElement("div");
 booksCardWrapper.id = "booksWrapper";
 
-function Book() {}
+const newBookForm = document.getElementById("addNewBookForm");
+newBookForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const title = document.getElementById("title").value;
+  const author = document.getElementById("author").value;
+  const num_of_pages = document.getElementById("num_of_pages").value;
+
+  if (title && author && num_of_pages) {
+    const book = new Book(myLibrary.length, title, author, num_of_pages);
+    addBookToLibrary(book);
+    newBookForm.reset();
+  } else {
+    alert("Please fill in the fields");
+  }
+});
+
+function Book(id, title, author, num_of_pages, read) {
+  this.id = id;
+  this.title = title;
+  this.author = author;
+  this.num_of_pages = num_of_pages;
+  this.read = read;
+}
+
+Book.prototype.changeReadStatus = function () {
+  this.read = this.read === "read" ? "unread" : "read";
+};
 
 function addBookToLibrary() {
-  let bookName = prompt("Please enter the name of the book:", "Harry Potter");
-  if (!bookName.length) return;
-  myLibrary.push(bookName);
+  const title = document.getElementById("title").value;
+  const author = document.getElementById("author").value;
+  const num_of_pages = document.getElementById("num_of_pages").value;
+  const read = document.getElementById("read").value;
+
+  if (title && author && num_of_pages) {
+    const book = new Book(myLibrary.length, title, author, num_of_pages, read);
+    myLibrary.push(book);
+    displayBooks();
+    newBookForm.reset();
+  } else {
+    alert("Please fill in the fields");
+  }
 }
 
 function removeBookFromLibrary(deleteIndex) {
@@ -48,11 +84,28 @@ function removeBookFromLibrary(deleteIndex) {
   displayBooks();
 }
 
+function handleToggle(editBookIndex) {
+  let selectedBook = myLibrary[editBookIndex];
+  if (!selectedBook) return;
+
+  console.log({ selectedBook });
+  const book = new Book(
+    selectedBook.id,
+    selectedBook.title,
+    selectedBook.author,
+    selectedBook.num_of_pages,
+    selectedBook.read
+  );
+  book.changeReadStatus();
+  myLibrary[editBookIndex].read = book.read;
+  displayBooks();
+}
+
 function displayBooks() {
   let allData = myLibrary.map((item, index) => {
     return `<div class="card">
     
-    <button id="delete" onClick="removeBookFromLibrary(${index})">Delete</button>
+    <button id="deleteBtn" onClick="removeBookFromLibrary(${index})">Delete</button>
     <div id="titleWrapper">
         <h3>
         ${item.title}
@@ -60,13 +113,20 @@ function displayBooks() {
         <h5>${item.author}</h5>
     </div>
     <div>
-        <div>
-        
-        ${item.num_of_pages} Pages</div>
-        <div id="read-btn">
-            <input type="checkbox" id="read" name="read" value={${item.read}} />
-            <label for="read">Read</label>
-        </div>
+
+    <div id="read-btn">
+      <div>${item.num_of_pages} Pages</div>
+      <div>
+        <input type="checkbox" id="read${index}" name="read${index}"
+        ${
+          item.read === "read" ? "checked" : ""
+        } onChange="handleToggle(${index})"
+        />
+        <label for="read">Read</label>
+      </div>
+    </div>
+    
+    
     </div>
     </div>`;
   });
@@ -74,6 +134,7 @@ function displayBooks() {
 }
 
 function displayModal() {
+  //   addBookToLibrary();
   dialog.showModal();
 }
 
@@ -81,10 +142,6 @@ function closeModal() {
   dialog.close();
 }
 
-displayBooks();
-
 booksList.appendChild(booksCardWrapper);
-// console.log(booksText);
-console.log(myLibrary);
-
-// addBookToLibrary();
+displayBooks();
+console.log({ myLibrary });
