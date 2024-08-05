@@ -122,7 +122,12 @@ function displayBooks() {
           item.read === "read" ? "checked" : ""
         } onChange="handleToggle(${index})"
         />
-        <label for="read">Read</label>
+ 
+        <label for="read">${
+          item?.read === "read" ? "Mark as Unread" : "Mark as Read"
+        } </label>
+     
+    
       </div>
     </div>
     
